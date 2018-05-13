@@ -72,6 +72,7 @@
 		qcom,mdss-dsi-color-order = "rgb_swap_rgb";
 		qcom,mdss-dsi-underflow-color = <0x0>;
 		qcom,mdss-dsi-border-color = <0>;
+		qcom,panel-allow-phy-poweroff;
 		qcom,mdss-dsi-on-command = [
 				15 01 00 00 00 00 02 FF 24
 				15 00 00 00 00 00 02 9D 34
