@@ -1075,7 +1075,6 @@ config ARM_KERNMEM_PERMS
 config DEBUG_RODATA
 	bool "Make kernel text and rodata read-only"
 	depends on ARM_KERNMEM_PERMS
-	default y
 	help
 	  If this is set, kernel text and rodata will be made read-only. This
 	  is to help catch accidental or malicious attempts to change the
