@@ -349,7 +349,7 @@ CFLAGS_KERNEL :=
 CFLAGS_MODULE :=
 CHECK := sparse
 CHECKFLAGS := -D__linux__ -Dlinux -D__STDC__ -Dunix -D__unix__ -Wno-return-void $(CF)
-CLANG_FLAGS := -no-integrated-as
+CLANG_FLAGS :=
 CPP := $(CC) -E
 DEPMOD := depmod
 GENKSYMS := scripts/genksyms/genksyms
@@ -660,7 +660,7 @@ KBUILD_CFLAGS += $(call cc-option, -mno-global-merge,)
 KBUILD_CFLAGS += $(call cc-option, -fcatch-undefined-behavior)
 endif
 KBUILD_CFLAGS += $(CLANG_FLAGS)
-KBUILD_AFLAGS += $(CLANG_FLAGS)
+KBUILD_AFLAGS += $(call cc-option, -no-integrated-as) $(CLANG_FLAGS)
 endif
 
 # Make toolchain changes before including arch/$(SRCARCH)/Makefile to ensure
