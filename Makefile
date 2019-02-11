@@ -784,7 +784,10 @@ KBUILD_CFLAGS += $(call cc-disable-warning, duplicate-decl-specifier) \
 		$(call cc-disable-warning, tautological-compare) \
 		$(call cc-option, -Wno-tautological-constant-out-of-range-compare) \
 		$(call cc-option, -Wno-undefined-optimized)
-KBUILD_CPPFLAGS += $(call cc-option,-Qunused-arguments,)
+ifeq ($(ld-name),lld)
+KBUILD_CFLAGS += -fuse-ld=lld
+endif
+KBUILD_CPPFLAGS += -Qunused-arguments
 endif
 
 KBUILD_CFLAGS += $(call cc-disable-warning, unused-but-set-variable) \
