@@ -658,11 +658,14 @@ endif
 ifneq ($(GCC_TOOLCHAIN),)
 CLANG_FLAGS += --gcc-toolchain=$(GCC_TOOLCHAIN)
 endif
+ifneq ($(LLVM_IAS),1)
+CLANG_FLAGS	+= -no-integrated-as
+endif
 ifdef CONFIG_MODULES
 KBUILD_CFLAGS += $(call cc-option, -fcatch-undefined-behavior)
 endif
 KBUILD_CFLAGS += $(CLANG_FLAGS)
-KBUILD_AFLAGS += $(call cc-option, -no-integrated-as) $(CLANG_FLAGS)
+KBUILD_AFLAGS += $(CLANG_FLAGS)
 endif
 
 # Make toolchain changes before including arch/$(SRCARCH)/Makefile to ensure
