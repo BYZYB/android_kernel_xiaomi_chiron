@@ -301,13 +301,14 @@ CONFIG_SHELL := $(shell if [ -x "$$BASH" ]; then echo $$BASH; \
 	  else if [ -x /bin/bash ]; then echo /bin/bash; \
 	  else echo sh; fi ; fi)
 
-ifneq ($(cc-name),clang)
-HOSTCC = gcc
-HOSTCXX = g++
-else
+ifneq ($(LLVM),)
 HOSTCC = clang
 HOSTCXX = clang++
+else
+HOSTCC = gcc
+HOSTCXX = g++
 endif
+
 HOSTCFLAGS = -Wall -Wmissing-prototypes -Wstrict-prototypes -Ofast -fomit-frame-pointer -mcpu=native -mtune=native -pipe
 HOSTCXXFLAGS = -Ofast -mcpu=native -mtune=native -pipe
 
@@ -342,12 +343,29 @@ scripts/Kbuild.include: ;
 include scripts/Kbuild.include
 
 # Make variables (CC, etc...)
+ifneq ($(LLVM),)
+AR = llvm-ar
+CC = clang
+LD = ld.lld
+NM = llvm-nm
+OBJCOPY = llvm-objcopy
+OBJDUMP = llvm-objdump
+OBJSIZE = llvm-size
+READELF = llvm-readelf
+STRIP = llvm-strip
+else
+AR = $(CROSS_COMPILE)ar
+AS = $(CROSS_COMPILE)as
+CC = $(CROSS_COMPILE)gcc
+LD = $(CROSS_COMPILE)ld
+NM = $(CROSS_COMPILE)nm
+OBJCOPY = $(CROSS_COMPILE)objcopy
+OBJDUMP = $(CROSS_COMPILE)objdump
+STRIP = $(CROSS_COMPILE)strip
+endif
 AFLAGS_KERNEL :=
 AFLAGS_MODULE :=
-AR := $(CROSS_COMPILE)ar
-AS := $(CROSS_COMPILE)as
 AWK := awk
-CC := $(CROSS_COMPILE)gcc
 CFLAGS_GCOV := -fprofile-arcs -ftest-coverage -fno-tree-loop-im
 CFLAGS_KCOV := -fsanitize-coverage=trace-pc
 CFLAGS_KERNEL :=
@@ -367,15 +385,10 @@ KBUILD_CFLAGS_KERNEL :=
 KBUILD_CFLAGS_MODULE := -DMODULE
 KBUILD_CPPFLAGS := -D__KERNEL__ -pipe
 KBUILD_LDFLAGS_MODULE := -T $(srctree)/scripts/module-common.lds
-LD := $(CROSS_COMPILE)ld
 LDFLAGS_MODULE :=
 LDLLD = ld.lld
-NM := $(CROSS_COMPILE)nm
-OBJCOPY := $(CROSS_COMPILE)objcopy
-OBJDUMP := $(CROSS_COMPILE)objdump
 PERL := perl
 PYTHON := python
-STRIP := $(CROSS_COMPILE)strip
 
 # Use USERINCLUDE when you must reference the UAPI directories only.
 USERINCLUDE    := \
@@ -401,11 +414,6 @@ endif
 
 # Use arch specific optimization
 ifeq ($(cc-name),clang)
-AR := llvm-ar
-NM := llvm-nm
-OBJCOPY := llvm-objcopy
-OBJDUMP := llvm-objdump
-STRIP := llvm-strip
 KBUILD_CFLAGS += \
 		-fdiagnostics-color \
 		-mcpu=cortex-a73 \
