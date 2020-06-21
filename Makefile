@@ -385,6 +385,7 @@ KBUILD_CFLAGS_KERNEL :=
 KBUILD_CFLAGS_MODULE := -DMODULE
 KBUILD_CPPFLAGS := -D__KERNEL__ -pipe
 KBUILD_LDFLAGS_MODULE := -T $(srctree)/scripts/module-common.lds
+LDFLAGS :=
 LDFLAGS_MODULE :=
 LDLLD = ld.lld
 PERL := perl
