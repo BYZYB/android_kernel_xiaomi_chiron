@@ -80,7 +80,7 @@
 					compatible = "android,system";
 					dev= "/dev/block/platform/vdevs/1c0b0000.virtio_blk/vda";
 					type = "ext4";
-					mnt_flags = "ro,barrier=1,discard";
+					mnt_flags = "ro,noatime,discard,nobarrier,noauto_da_alloc";
 					fsmgr_flags = "wait";
 					status = "ok";
 				};
@@ -88,7 +88,7 @@
 					compatible = "android,vendor";
 					dev="/dev/block/platform/vdevs/1c0f0000.virtio_blk/vdc";
 					type = "ext4";
-					mnt_flags = "ro,barrier=1,discard";
+					mnt_flags = "ro,noatime,discard,nobarrier,noauto_da_alloc";
 					fsmgr_flags = "wait";
 					status = "ok";
 				};

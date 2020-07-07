@@ -267,7 +267,7 @@ struct vm_fault {
 /*
  * These are the virtual MM functions - opening of an area, closing and
  * unmapping it (needed to keep files on disk up-to-date etc), pointer
- * to the functions called when a no-page or a wp-page exception occurs. 
+ * to the functions called when a no-page or a wp-page exception occurs.
  */
 struct vm_operations_struct {
 	void (*open)(struct vm_area_struct * area);
@@ -2273,10 +2273,10 @@ void drop_slab_node(int nid);
 
 void drop_pagecache_sb(struct super_block *sb, void *unused);
 
-#ifndef CONFIG_MMU
-#define randomize_va_space 0
-#else
+#ifdef CONFIG_ASLR
 extern int randomize_va_space;
+#else
+#define randomize_va_space 0
 #endif
 
 const char * arch_vma_name(struct vm_area_struct *vma);
