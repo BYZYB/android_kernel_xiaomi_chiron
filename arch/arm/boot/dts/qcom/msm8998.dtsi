@@ -52,6 +52,7 @@
 			next-level-cache = <&L2_0>;
 			qcom,ea = <&ea0>;
 			sched-energy-costs = <&CPU_COST_0 &CLUSTER_COST_0>;
+			clock-frequency = <1900800000>;
 			L2_0: l2-cache {
 			      compatible = "arm,arch-cache";
 			      cache-level = <2>;
@@ -81,6 +82,7 @@
 			next-level-cache = <&L2_0>;
 			qcom,ea = <&ea1>;
 			sched-energy-costs = <&CPU_COST_0 &CLUSTER_COST_0>;
+			clock-frequency = <1900800000>;
 			L1_I_1: l1-icache {
 				compatible = "arm,arch-cache";
 				qcom,dump-size = <0x9040>;
@@ -105,6 +107,7 @@
 			next-level-cache = <&L2_0>;
 			qcom,ea = <&ea2>;
 			sched-energy-costs = <&CPU_COST_0 &CLUSTER_COST_0>;
+			clock-frequency = <1900800000>;
 			L1_I_2: l1-icache {
 				compatible = "arm,arch-cache";
 				qcom,dump-size = <0x9040>;
@@ -129,6 +132,7 @@
 			next-level-cache = <&L2_0>;
 			qcom,ea = <&ea3>;
 			sched-energy-costs = <&CPU_COST_0 &CLUSTER_COST_0>;
+			clock-frequency = <1900800000>;
 			L1_I_3: l1-icache {
 				compatible = "arm,arch-cache";
 				qcom,dump-size = <0x9040>;
@@ -153,6 +157,7 @@
 			next-level-cache = <&L2_1>;
 			qcom,ea = <&ea4>;
 			sched-energy-costs = <&CPU_COST_1 &CLUSTER_COST_1>;
+			clock-frequency = <2457600000>;
 			L2_1: l2-cache {
 				compatible = "arm,arch-cache";
 				cache-level = <2>;
@@ -181,6 +186,7 @@
 			next-level-cache = <&L2_1>;
 			qcom,ea = <&ea5>;
 			sched-energy-costs = <&CPU_COST_1 &CLUSTER_COST_1>;
+			clock-frequency = <2457600000>;
 			L1_I_101: l1-icache {
 				compatible = "arm,arch-cache";
 				qcom,dump-size = <0x12000>;
@@ -205,6 +211,7 @@
 			next-level-cache = <&L2_1>;
 			qcom,ea = <&ea6>;
 			sched-energy-costs = <&CPU_COST_1 &CLUSTER_COST_1>;
+			clock-frequency = <2457600000>;
 			L1_I_102: l1-icache {
 				compatible = "arm,arch-cache";
 				qcom,dump-size = <0x12000>;
@@ -229,6 +236,7 @@
 			next-level-cache = <&L2_1>;
 			qcom,ea = <&ea7>;
 			sched-energy-costs = <&CPU_COST_1 &CLUSTER_COST_1>;
+			clock-frequency = <2457600000>;
 			L1_I_103: l1-icache {
 				compatible = "arm,arch-cache";
 				qcom,dump-size = <0x12000>;
