@@ -11,7 +11,7 @@ ccflags-vdso := \
 	-D__VDSO__
 cflags-vdso := $(ccflags-vdso) \
 	$(filter -W%,$(filter-out -Wa$(comma)%,$(KBUILD_CFLAGS))) \
-	-O2 -g -fPIC -fno-strict-aliasing -fno-common -fno-builtin -G 0 \
+	-g -fPIC -fno-strict-aliasing -fno-common -fno-builtin -G 0 \
 	-DDISABLE_BRANCH_PROFILING \
 	$(call cc-option, -fno-stack-protector)
 aflags-vdso := $(ccflags-vdso) \

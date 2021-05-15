@@ -54,7 +54,7 @@ KERNEL_BUILD_PATH := $(BUILD_PATH)/kernel$(if $(findstring yes,$(DEBUG_KERNEL)),
 rwildcard=$(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2) $(filter $(subst *,%,$2),$d))
 WIREGUARD_SOURCES := $(call rwildcard,$(KERNEL_PATH)/drivers/net/wireguard/,*)
 
-export CFLAGS ?= -O3 -pipe
+export CFLAGS ?= -pipe
 export LDFLAGS ?=
 export CPPFLAGS := -I$(BUILD_PATH)/include
 

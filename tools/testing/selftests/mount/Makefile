@@ -1,6 +1,5 @@
 # Makefile for mount selftests.
-CFLAGS = -Wall \
-         -O2
+CFLAGS = -Wall
 all: unprivileged-remount-test
 
 unprivileged-remount-test: unprivileged-remount-test.c

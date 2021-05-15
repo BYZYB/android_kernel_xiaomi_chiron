@@ -15,7 +15,7 @@ all: $(BINARIES)
 %: %.c
 	$(CC) $(CFLAGS) -o $@ $^ -lrt
 userfaultfd: userfaultfd.c ../../../../usr/include/linux/kernel.h
-	$(CC) $(CFLAGS) -O2 -o $@ $< -lpthread
+	$(CC) $(CFLAGS) -o $@ $< -lpthread
 
 ../../../../usr/include/linux/kernel.h:
 	make -C ../../../.. headers_install

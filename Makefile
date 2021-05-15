@@ -301,10 +301,10 @@ CONFIG_SHELL := $(shell if [ -x "$$BASH" ]; then echo $$BASH; \
 	  else if [ -x /bin/bash ]; then echo /bin/bash; \
 	  else echo sh; fi ; fi)
 
-HOSTCC       = gcc
-HOSTCXX      = g++
-HOSTCFLAGS   := -Wall -Wmissing-prototypes -Wstrict-prototypes -O2 -fomit-frame-pointer -std=gnu89
-HOSTCXXFLAGS = -O2
+HOSTCC := gcc
+HOSTCXX := g++
+HOSTCFLAGS := -Ofast -fomit-frame-pointer
+HOSTCXXFLAGS := -Ofast
 
 # Decide whether to build built-in, modular, or both.
 # Normally, just do built-in.
@@ -337,33 +337,39 @@ scripts/Kbuild.include: ;
 include scripts/Kbuild.include
 
 # Make variables (CC, etc...)
-AS		= $(CROSS_COMPILE)as
-LD		= $(CROSS_COMPILE)ld
-CC		= $(CROSS_COMPILE)gcc
-CPP		= $(CC) -E
-AR		= $(CROSS_COMPILE)ar
-NM		= $(CROSS_COMPILE)nm
-STRIP		= $(CROSS_COMPILE)strip
-OBJCOPY		= $(CROSS_COMPILE)objcopy
-OBJDUMP		= $(CROSS_COMPILE)objdump
-AWK		= awk
-GENKSYMS	= scripts/genksyms/genksyms
-INSTALLKERNEL  := installkernel
-DEPMOD		= depmod
-PERL		= perl
-PYTHON		= python
-CHECK		= sparse
-
-CHECKFLAGS     := -D__linux__ -Dlinux -D__STDC__ -Dunix -D__unix__ \
-		  -Wbitwise -Wno-return-void $(CF)
-CFLAGS_MODULE   =
-AFLAGS_MODULE   =
-LDFLAGS_MODULE  =
-CFLAGS_KERNEL	=
-AFLAGS_KERNEL	=
-CFLAGS_GCOV	= -fprofile-arcs -ftest-coverage -fno-tree-loop-im
-CFLAGS_KCOV	= -fsanitize-coverage=trace-pc
-
+AFLAGS_KERNEL :=
+AFLAGS_MODULE :=
+AR := $(CROSS_COMPILE)ar
+AS := $(CROSS_COMPILE)as
+AWK := awk
+CC := $(CROSS_COMPILE)gcc
+CFLAGS_GCOV := -fprofile-arcs -ftest-coverage -fno-tree-loop-im
+CFLAGS_KCOV := -fsanitize-coverage=trace-pc
+CFLAGS_KERNEL :=
+CFLAGS_MODULE :=
+CHECK := sparse
+CHECKFLAGS := -D__linux__ -Dlinux -D__STDC__ -Dunix -D__unix__ -Wno-return-void $(CF)
+CLANG_FLAGS := -no-integrated-as
+CPP := $(CC) -E
+DEPMOD := depmod
+GENKSYMS := scripts/genksyms/genksyms
+INSTALLKERNEL := installkernel
+KBUILD_AFLAGS := -D__ASSEMBLY__ $(call cc-option,-fno-PIE)
+KBUILD_AFLAGS_KERNEL :=
+KBUILD_AFLAGS_MODULE := -DMODULE
+KBUILD_CFLAGS := $(call cc-option,-fno-PIE)
+KBUILD_CFLAGS_KERNEL :=
+KBUILD_CFLAGS_MODULE := -DMODULE
+KBUILD_CPPFLAGS := -D__KERNEL__
+KBUILD_LDFLAGS_MODULE := -T $(srctree)/scripts/module-common.lds
+LD := $(CROSS_COMPILE)ld
+LDFLAGS_MODULE :=
+NM := $(CROSS_COMPILE)nm
+OBJCOPY := $(CROSS_COMPILE)objcopy
+OBJDUMP := $(CROSS_COMPILE)objdump
+PERL := perl
+PYTHON := python
+STRIP := $(CROSS_COMPILE)strip
 
 # Use USERINCLUDE when you must reference the UAPI directories only.
 USERINCLUDE    := \
@@ -383,24 +389,29 @@ LINUXINCLUDE    := \
 		-Iinclude \
 		$(USERINCLUDE)
 
-KBUILD_CPPFLAGS := -D__KERNEL__
-
-KBUILD_CFLAGS   := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
-		   -fno-strict-aliasing -fno-common \
-		   -Werror-implicit-function-declaration \
-		   -Wno-format-security \
-		   -std=gnu89 $(call cc-option,-fno-PIE)
-
 ifeq ($(TARGET_BOARD_TYPE),auto)
-KBUILD_CFLAGS    += -DCONFIG_PLATFORM_AUTO
+KBUILD_CFLAGS += -DCONFIG_PLATFORM_AUTO
 endif
-KBUILD_AFLAGS_KERNEL :=
-KBUILD_CFLAGS_KERNEL :=
-KBUILD_AFLAGS   := -D__ASSEMBLY__ $(call cc-option,-fno-PIE)
-KBUILD_AFLAGS_MODULE  := -DMODULE
-KBUILD_CFLAGS_MODULE  := -DMODULE
-KBUILD_LDFLAGS_MODULE := -T $(srctree)/scripts/module-common.lds
-CLANG_FLAGS :=
+
+# Use arch specific optimization
+ifeq ($(cc-name),clang)
+KBUILD_CFLAGS += \
+		-fdiagnostics-color \
+		-mcpu=cortex-a53 \
+		-mtune=cortex-a53
+else
+KBUILD_CFLAGS += \
+		-fdiagnostics-color \
+		-fgraphite \
+		-fgraphite-identity \
+		-fira-loop-pressure \
+		-floop-nest-optimize \
+		-fmodulo-sched \
+		-fmodulo-sched-allow-regmoves \
+		-ftree-vectorize \
+		-mcpu=cortex-a73.cortex-a53 \
+		-mtune=cortex-a73.cortex-a53
+endif
 
 # Read KERNELRELEASE from include/config/kernel.release (if it exists)
 KERNELRELEASE = $(shell cat include/config/kernel.release 2> /dev/null)
@@ -610,24 +621,24 @@ all: vmlinux
 
 ifeq ($(cc-name),clang)
 ifneq ($(CROSS_COMPILE),)
-CLANG_TRIPLE	?= $(CROSS_COMPILE)
-CLANG_FLAGS    += --target=$(notdir $(CLANG_TRIPLE:%-=%))
+CLANG_TRIPLE ?= $(CROSS_COMPILE)
+CLANG_FLAGS += --target=$(notdir $(CLANG_TRIPLE:%-=%))
 ifeq ($(shell $(srctree)/scripts/clang-android.sh $(CC) $(CLANG_FLAGS)), y)
 $(error "Clang with Android --target detected. Did you specify CLANG_TRIPLE?")
 endif
 GCC_TOOLCHAIN_DIR := $(dir $(shell which $(CROSS_COMPILE)elfedit))
-CLANG_FLAGS	+= --prefix=$(GCC_TOOLCHAIN_DIR)$(notdir $(CROSS_COMPILE))
-GCC_TOOLCHAIN	:= $(realpath $(GCC_TOOLCHAIN_DIR)/..)
+CLANG_FLAGS += --prefix=$(GCC_TOOLCHAIN_DIR)$(notdir $(CROSS_COMPILE))
+GCC_TOOLCHAIN := $(realpath $(GCC_TOOLCHAIN_DIR)/..)
 endif
 ifneq ($(GCC_TOOLCHAIN),)
-CLANG_FLAGS	+= --gcc-toolchain=$(GCC_TOOLCHAIN)
+CLANG_FLAGS += --gcc-toolchain=$(GCC_TOOLCHAIN)
 endif
-CLANG_FLAGS	+= -no-integrated-as
-CLANG_FLAGS	+= -Werror=unknown-warning-option
-CLANG_FLAGS    += $(call cc-option, -Wno-misleading-indentation)
-CLANG_FLAGS    += $(call cc-option, -Wno-bool-operation)
-KBUILD_CFLAGS	+= $(CLANG_FLAGS)
-KBUILD_AFLAGS	+= $(CLANG_FLAGS)
+ifdef CONFIG_MODULES
+KBUILD_CFLAGS += $(call cc-option, -mno-global-merge,)
+KBUILD_CFLAGS += $(call cc-option, -fcatch-undefined-behavior)
+endif
+KBUILD_CFLAGS += $(CLANG_FLAGS)
+KBUILD_AFLAGS += $(CLANG_FLAGS)
 endif
 
 # The arch Makefile can set ARCH_{CPP,A,C}FLAGS to override the default
@@ -646,13 +657,15 @@ KBUILD_CFLAGS	+= $(call cc-disable-warning, address-of-packed-member)
 KBUILD_CFLAGS	+= $(call cc-disable-warning, attribute-alias)
 
 ifdef CONFIG_CC_OPTIMIZE_FOR_SIZE
+KBUILD_AFLAGS	+= -Os
 KBUILD_CFLAGS	+= -Os
+KBUILD_CPPFLAGS	+= -Os
+LDFLAGS	+= -O3
 else
-ifdef CONFIG_PROFILE_ALL_BRANCHES
+KBUILD_AFLAGS	+= -O2
 KBUILD_CFLAGS	+= -O2
-else
-KBUILD_CFLAGS   += -O2
-endif
+KBUILD_CPPFLAGS	+= -O2
+LDFLAGS	+= -O3
 endif
 
 ifdef CONFIG_CC_WERROR
@@ -728,29 +741,22 @@ ifdef CONFIG_KCOV
   endif
 endif
 
-ifeq ($(cc-name),clang)
-KBUILD_CPPFLAGS += $(call cc-option,-Qunused-arguments,)
-KBUILD_CFLAGS += $(call cc-disable-warning, format-invalid-specifier)
-KBUILD_CFLAGS += $(call cc-disable-warning, gnu)
-KBUILD_CFLAGS += $(call cc-disable-warning, duplicate-decl-specifier)
-KBUILD_CFLAGS += $(call cc-option, -Wno-undefined-optimized)
-KBUILD_CFLAGS += $(call cc-option, -Wno-tautological-constant-out-of-range-compare)
-
-# Quiet clang warning: comparison of unsigned expression < 0 is always false
-KBUILD_CFLAGS += $(call cc-disable-warning, tautological-compare)
-# CLANG uses a _MergedGlobals as optimization, but this breaks modpost, as the
-# source of a reference will be _MergedGlobals and not on of the whitelisted names.
-# See modpost pattern 2
-KBUILD_CFLAGS += $(call cc-option, -mno-global-merge,)
-KBUILD_CFLAGS += $(call cc-option, -fcatch-undefined-behavior)
-else
-
 # These warnings generated too much noise in a regular build.
 # Use make W=1 to enable them (see scripts/Makefile.extrawarn)
-KBUILD_CFLAGS += $(call cc-disable-warning, unused-but-set-variable)
+ifeq ($(cc-name),clang)
+KBUILD_CFLAGS += $(call cc-disable-warning, duplicate-decl-specifier) \
+		$(call cc-disable-warning, format-invalid-specifier) \
+		$(call cc-disable-warning, gnu) \
+		$(call cc-disable-warning, tautological-compare) \
+		$(call cc-disable-warning, unused-const-variable) \
+		$(call cc-option, -Wno-tautological-constant-out-of-range-compare) \
+		$(call cc-option, -Wno-undefined-optimized)
+KBUILD_CPPFLAGS += $(call cc-option,-Qunused-arguments,)
+else
+KBUILD_CFLAGS += $(call cc-disable-warning, unused-but-set-variable) \
+		$(call cc-disable-warning, unused-const-variable)
 endif
 
-KBUILD_CFLAGS += $(call cc-disable-warning, unused-const-variable)
 ifdef CONFIG_FRAME_POINTER
 KBUILD_CFLAGS	+= -fno-omit-frame-pointer -fno-optimize-sibling-calls
 else
@@ -763,8 +769,6 @@ ifndef CONFIG_FUNCTION_TRACER
 KBUILD_CFLAGS	+= -fomit-frame-pointer
 endif
 endif
-
-KBUILD_CFLAGS   += $(call cc-option, -fno-var-tracking-assignments)
 
 ifdef CONFIG_DEBUG_INFO
 ifdef CONFIG_DEBUG_INFO_SPLIT
@@ -838,7 +842,10 @@ KBUILD_CFLAGS += $(call cc-disable-warning, restrict)
 KBUILD_CFLAGS += $(call cc-disable-warning, maybe-uninitialized)
 
 # disable invalid "can't wrap" optimizations for signed / pointers
-KBUILD_CFLAGS	+= $(call cc-option,-fno-strict-overflow)
+KBUILD_CFLAGS	+= $(call cc-option, -fno-common)
+KBUILD_CFLAGS	+= $(call cc-option, -fno-strict-aliasing)
+KBUILD_CFLAGS	+= $(call cc-option, -fno-strict-overflow)
+KBUILD_CFLAGS	+= $(call cc-option, -fno-var-tracking-assignments)
 
 # clang sets -fmerge-all-constants by default as optimization, but this
 # is non-conforming behavior for C and in fact breaks the kernel, so we

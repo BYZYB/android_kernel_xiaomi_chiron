@@ -1,7 +1,5 @@
 TEST_PROGS := gettimeofday
 
-CFLAGS += -O2
-
 all: $(TEST_PROGS)
 
 $(TEST_PROGS): ../harness.c

@@ -19,14 +19,12 @@ zinc-$(CONFIG_ZINC_ARCH_X86_64) += chacha20/chacha20-x86_64.o
 zinc-$(CONFIG_ZINC_ARCH_ARM) += chacha20/chacha20-arm.o chacha20/chacha20-unrolled-arm.o
 zinc-$(CONFIG_ZINC_ARCH_ARM64) += chacha20/chacha20-arm64.o
 zinc-$(CONFIG_ZINC_ARCH_MIPS) += chacha20/chacha20-mips.o
-AFLAGS_chacha20-mips.o += -O2 # This is required to fill the branch delay slots
 
 zinc-y += poly1305/poly1305.o
 zinc-$(CONFIG_ZINC_ARCH_X86_64) += poly1305/poly1305-x86_64.o
 zinc-$(CONFIG_ZINC_ARCH_ARM) += poly1305/poly1305-arm.o
 zinc-$(CONFIG_ZINC_ARCH_ARM64) += poly1305/poly1305-arm64.o
 zinc-$(CONFIG_ZINC_ARCH_MIPS) += poly1305/poly1305-mips.o
-AFLAGS_poly1305-mips.o += -O2 # This is required to fill the branch delay slots
 zinc-$(CONFIG_ZINC_ARCH_MIPS64) += poly1305/poly1305-mips64.o
 
 zinc-y += chacha20poly1305.o

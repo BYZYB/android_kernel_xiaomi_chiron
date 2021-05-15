@@ -133,9 +133,7 @@ ifndef DEBUG
   DEBUG := 0
 endif
 
-ifeq ($(DEBUG),0)
-  CFLAGS += -O6
-else
+ifneq ($(DEBUG),0)
   CFLAGS += $(call cc-option,-Og,-O0)
 endif
 

@@ -1,6 +1,6 @@
 TEST_PROGS := switch_endian_test
 
-ASFLAGS += -O2 -Wall -g -nostdlib -m64
+ASFLAGS += -Wall -g -nostdlib -m64
 
 all: $(TEST_PROGS)
 
