@@ -2348,7 +2348,6 @@ int ioremap_non_ap_bam_regs(void)
 			IPA_CLIENT_IS_Q6_ZIP_CONS(client_idx) ||
 			IPA_CLIENT_IS_Q6_NON_ZIP_PROD(client_idx) ||
 			IPA_CLIENT_IS_Q6_ZIP_PROD(client_idx)) {
-
 			ep_idx = ipa2_get_ep_mapping(client_idx);
 
 			if (ep_idx == -1)
@@ -2365,7 +2364,8 @@ int ioremap_non_ap_bam_regs(void)
 				return -ENOMEM;
 			}
 		}
-		return 0;
+
+	return 0;
 }
 
 /**
@@ -5500,4 +5500,3 @@ int ipa_iommu_map(struct iommu_domain *domain,
 
 MODULE_LICENSE("GPL v2");
 MODULE_DESCRIPTION("IPA HW device driver");
-
