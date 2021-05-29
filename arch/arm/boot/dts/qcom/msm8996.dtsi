@@ -196,7 +196,7 @@
 					compatible = "android,vendor";
 					dev = "/dev/block/platform/soc/7464900.sdhci/by-name/vendor";
 					type = "ext4";
-					mnt_flags = "ro,noatime,discard,nobarrier,noauto_da_alloc";
+					mnt_flags = "ro,noatime,discard,noauto_da_alloc";
 					fsmgr_flags = "wait,avb";
 					status = "ok";
 				};
