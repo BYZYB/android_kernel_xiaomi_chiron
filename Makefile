@@ -407,6 +407,9 @@ KBUILD_CFLAGS += \
 		-mllvm -polly-run-dce \
 		-mllvm -polly-run-inliner \
 		-mllvm -polly-vectorizer=stripmine
+KBUILD_AFLAGS += \
+		-mcpu=cortex-a53 \
+		-mtune=cortex-a53
 else
 KBUILD_CFLAGS += \
 		-fdiagnostics-color \
@@ -417,6 +420,9 @@ KBUILD_CFLAGS += \
 		-fmodulo-sched \
 		-fmodulo-sched-allow-regmoves \
 		-ftree-vectorize \
+		-mcpu=cortex-a73.cortex-a53 \
+		-mtune=cortex-a73.cortex-a53
+KBUILD_AFLAGS += \
 		-mcpu=cortex-a73.cortex-a53 \
 		-mtune=cortex-a73.cortex-a53
 endif
