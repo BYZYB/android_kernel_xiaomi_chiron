@@ -395,6 +395,11 @@ endif
 
 # Use arch specific optimization
 ifeq ($(cc-name),clang)
+AR := llvm-ar
+NM := llvm-nm
+OBJCOPY := llvm-objcopy
+OBJDUMP := llvm-objdump
+STRIP := llvm-strip
 KBUILD_CFLAGS += \
 		-fdiagnostics-color \
 		-mcpu=cortex-a53 \
