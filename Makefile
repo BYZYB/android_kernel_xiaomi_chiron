@@ -396,6 +396,8 @@ endif
 # Use arch specific optimization
 ifeq ($(cc-name),clang)
 AR := llvm-ar
+HOSTCC := clang
+HOSTCXX := clang++
 NM := llvm-nm
 OBJCOPY := llvm-objcopy
 OBJDUMP := llvm-objdump
