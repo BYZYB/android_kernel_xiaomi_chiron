@@ -1,6 +1,6 @@
 VERSION = 4
 PATCHLEVEL = 4
-SUBLEVEL = 267
+SUBLEVEL = 276
 EXTRAVERSION =
 NAME = Blurry Fish Butt
 
@@ -769,14 +769,13 @@ KBUILD_CFLAGS += $(call cc-disable-warning, duplicate-decl-specifier) \
 		$(call cc-disable-warning, format-invalid-specifier) \
 		$(call cc-disable-warning, gnu) \
 		$(call cc-disable-warning, tautological-compare) \
-		$(call cc-disable-warning, unused-const-variable) \
 		$(call cc-option, -Wno-tautological-constant-out-of-range-compare) \
 		$(call cc-option, -Wno-undefined-optimized)
 KBUILD_CPPFLAGS += $(call cc-option,-Qunused-arguments,)
-else
+endif
+
 KBUILD_CFLAGS += $(call cc-disable-warning, unused-but-set-variable) \
 		$(call cc-disable-warning, unused-const-variable)
-endif
 
 ifdef CONFIG_FRAME_POINTER
 KBUILD_CFLAGS	+= -fno-omit-frame-pointer -fno-optimize-sibling-calls
