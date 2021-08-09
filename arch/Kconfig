@@ -463,8 +463,7 @@ config LTO_CLANG
           files, and the actual compilation from IR occurs at the LTO link step,
           which may take several minutes.
 
-          If you select this option, you must compile the kernel with clang and
-	  LLD.
+          If you select this option, you must compile the kernel with clang and LLD.
 
 endchoice
 
