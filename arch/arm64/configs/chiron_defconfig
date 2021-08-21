@@ -1,6 +1,6 @@
 #
 # Automatically generated file; DO NOT EDIT.
-# Linux/arm64 4.4.276 Kernel Configuration
+# Linux/arm64 4.4.278 Kernel Configuration
 #
 CONFIG_ARM64=y
 CONFIG_64BIT=y
@@ -636,6 +636,7 @@ CONFIG_NET_INGRESS=y
 CONFIG_PACKET=y
 # CONFIG_PACKET_DIAG is not set
 CONFIG_UNIX=y
+CONFIG_UNIX_SCM=y
 # CONFIG_UNIX_DIAG is not set
 CONFIG_XFRM=y
 CONFIG_XFRM_ALGO=y
