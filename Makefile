@@ -405,8 +405,8 @@ OBJDUMP := llvm-objdump
 STRIP := llvm-strip
 KBUILD_CFLAGS += \
 		-fdiagnostics-color \
-		-mcpu=cortex-a53 \
-		-mtune=cortex-a53 \
+		-mcpu=cortex-a73 \
+		-mtune=cortex-a73 \
 		-mllvm -polly \
 		-mllvm -polly-ast-use-context \
 		-mllvm -polly-detect-keep-going \
@@ -416,8 +416,8 @@ KBUILD_CFLAGS += \
 		-mllvm -polly-run-inliner \
 		-mllvm -polly-vectorizer=stripmine
 KBUILD_AFLAGS += \
-		-mcpu=cortex-a53 \
-		-mtune=cortex-a53
+		-mcpu=cortex-a73 \
+		-mtune=cortex-a73
 else
 KBUILD_CFLAGS += \
 		-fdiagnostics-color \
