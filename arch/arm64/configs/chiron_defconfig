@@ -1,6 +1,6 @@
 #
 # Automatically generated file; DO NOT EDIT.
-# Linux/arm64 4.4.283 Kernel Configuration
+# Linux/arm64 4.4.289 Kernel Configuration
 #
 CONFIG_ARM64=y
 CONFIG_64BIT=y
@@ -1848,7 +1848,7 @@ CONFIG_DIAG_OVER_USB=y
 #
 # HSIC/SMUX support for DIAG
 #
-CONFIG_DIAGFWD_BRIDGE_CODE=y
+# CONFIG_DIAGFWD_BRIDGE_CODE is not set
 # CONFIG_TTY_PRINTK is not set
 # CONFIG_HVC_DCC is not set
 # CONFIG_IPMI_HANDLER is not set
