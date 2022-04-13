@@ -656,7 +656,6 @@ ifneq ($(GCC_TOOLCHAIN),)
 CLANG_FLAGS += --gcc-toolchain=$(GCC_TOOLCHAIN)
 endif
 ifdef CONFIG_MODULES
-KBUILD_CFLAGS += $(call cc-option, -mno-global-merge,)
 KBUILD_CFLAGS += $(call cc-option, -fcatch-undefined-behavior)
 endif
 KBUILD_CFLAGS += $(CLANG_FLAGS)
