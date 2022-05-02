@@ -301,10 +301,15 @@ CONFIG_SHELL := $(shell if [ -x "$$BASH" ]; then echo $$BASH; \
 	  else if [ -x /bin/bash ]; then echo /bin/bash; \
 	  else echo sh; fi ; fi)
 
-HOSTCC := gcc
-HOSTCXX := g++
-HOSTCFLAGS := -Ofast -fomit-frame-pointer -pipe
-HOSTCXXFLAGS := -Ofast -pipe
+ifneq ($(cc-name),clang)
+HOSTCC = gcc
+HOSTCXX = g++
+else
+HOSTCC = clang
+HOSTCXX = clang++
+endif
+HOSTCFLAGS = -Wall -Wmissing-prototypes -Wstrict-prototypes -Ofast -fomit-frame-pointer -mcpu=native -mtune=native -pipe
+HOSTCXXFLAGS = -Ofast -mcpu=native -mtune=native -pipe
 
 # Decide whether to build built-in, modular, or both.
 # Normally, just do built-in.
@@ -397,8 +402,6 @@ endif
 # Use arch specific optimization
 ifeq ($(cc-name),clang)
 AR := llvm-ar
-HOSTCC := clang
-HOSTCXX := clang++
 NM := llvm-nm
 OBJCOPY := llvm-objcopy
 OBJDUMP := llvm-objdump
