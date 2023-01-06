@@ -423,7 +423,7 @@ KBUILD_CFLAGS += \
 		-mllvm -polly-ast-use-context \
 		-mllvm -polly-detect-keep-going \
 		-mllvm -polly-invariant-load-hoisting \
-		-mllvm -polly-opt-fusion=max \
+		-mllvm -polly-loopfusion-greedy \
 		-mllvm -polly-run-dce \
 		-mllvm -polly-run-inliner \
 		-mllvm -polly-vectorizer=stripmine
