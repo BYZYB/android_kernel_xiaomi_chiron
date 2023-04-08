@@ -417,8 +417,8 @@ endif
 ifeq ($(cc-name),clang)
 KBUILD_CFLAGS += \
 		-fdiagnostics-color \
-		-mcpu=cortex-a73 \
-		-mtune=cortex-a73 \
+		-mcpu=cortex-a53 \
+		-mtune=cortex-a53 \
 		-mllvm -polly \
 		-mllvm -polly-ast-use-context \
 		-mllvm -polly-detect-keep-going \
@@ -428,8 +428,8 @@ KBUILD_CFLAGS += \
 		-mllvm -polly-run-inliner \
 		-mllvm -polly-vectorizer=stripmine
 KBUILD_AFLAGS += \
-		-mcpu=cortex-a73 \
-		-mtune=cortex-a73
+		-mcpu=cortex-a53 \
+		-mtune=cortex-a53
 else
 KBUILD_CFLAGS += \
 		-fdiagnostics-color \
